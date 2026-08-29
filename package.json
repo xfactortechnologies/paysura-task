@@ -1,0 +1,15 @@
+{
+  "name": "paysura-exercise-stub-api",
+  "version": "1.0.0",
+  "description": "Stub payment API for the Paysura POS Android paid exercise. Zero dependencies.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "smoke": "./smoke.sh"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "private": true,
+  "license": "UNLICENSED"
+}
