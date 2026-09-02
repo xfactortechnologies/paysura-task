@@ -275,6 +275,12 @@ function successEnvelope(rec) {
 		provider_cost: Number((rec.amount * 0.97).toFixed(2)),
 		agent_commission: Number((rec.amount * 0.02).toFixed(2)),
 		remaining_balance: 12450.0,
+		// The receipt (A15). Always null here: this stub vends airtime only, and airtime
+		// produces nothing the customer needs to carry away. A biller whose vend does —
+		// prepaid electricity, where the token *is* the product — fills this with ordered,
+		// labelled rows to print. Read null as "this biller has no receipt", which is a
+		// real answer, not a gap in the stub.
+		vend_data: null,
 	};
 }
 
@@ -339,6 +345,10 @@ function handleStatus(req, res, body) {
 		amount: rec.amount,
 		currency: rec.currency,
 		biller: rec.biller,
+		// Same key and same shape as pay_bill's (A15), and null for the same reason. It is
+		// here on every status response because on a real biller this is the *only* path to
+		// a receipt for a payment whose pay call never came back.
+		vend_data: null,
 	});
 }
 

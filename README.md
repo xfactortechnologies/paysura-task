@@ -148,10 +148,20 @@ places.
     "provider_reference": "STUB-9F1C1B8E",
     "provider_cost": 97.00,
     "agent_commission": 2.00,
-    "remaining_balance": 12450.00
+    "remaining_balance": 12450.00,
+    "vend_data": null
   }
 }
 ```
+
+> **`vend_data` is always `null` in this exercise, and that is a real answer — not a gap.**
+> It carries the receipt for billers whose vend produces something the customer must carry away:
+> prepaid electricity, where the meter token *is* the product. This stub sells **airtime only**,
+> which produces no such artifact, so the key is always `null`.
+>
+> Model it as nullable and pass it through. Don't drop it from your DTO, and don't assume `null`
+> means "not implemented yet" — on the real backend a non-null value comes with its own rules about
+> when the app may print, and a client that silently discarded the key would be the bug.
 
 ### The `status` vocabulary
 
@@ -226,7 +236,8 @@ curl -s -X POST localhost:4499/api/method/paysura.api.accounting.bills.get_trans
 ```
 
 Returns `{"message": {"status": "...", …}}` where `status` is one of `pending`, `settled`,
-`reversed`, `declined`, or `not_found`.
+`reversed`, `declined`, or `not_found`. Every response except `not_found` also carries the same
+nullable `vend_data` key described above.
 
 > ⚠️ **`not_found` is not proof that nothing happened.** The request may simply not have landed yet.
 > Treat it as *still unknown* and keep the row non-terminal.
